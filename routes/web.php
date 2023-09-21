@@ -1,9 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TopicsController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ClassroomPeopleController;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\ClassworkController;
+use App\Http\Controllers\JoinClassroomController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TopicsController;
+use App\Http\Middleware\ApplyUserPreferences;
+use Illuminate\Support\Facades\Route;
+use PhpParser\Builder\Class_;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,20 +38,66 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('classrooms/trashed', [ClassroomsController::class, 'trashed'])->name('classrooms.trashed');
+// Route::get('/classrooms', [ClassroomsController::class, 'index'])->name('classrooms.index');
 
-Route::put('classrooms/trashed/{classroom}', [ClassroomsController::class, 'restore'])->name('classrooms.restore');
+// Route::get('/classrooms/{classroom}', [CLassroomsController::class, 'show'])->name('classrooms.show')->where('classroom', '\d+');
 
-Route::put('classrooms/trashed/{classroom}', [ClassroomsController::class, 'forceDelete'])->name('classrooms.force-delete');
+// Route::get('/classrooms/create', [CLassroomsController::class, 'create'])->name('classrooms.create');
 
-Route::resource('/classrooms', ClassroomsController::class)->names([
-    //'index' => 'classrooms/index',
-    // 'create' => 'classrooms/create'
-], [
-    'middleware' => ['auth']
-]);
+// Route::post('/classrooms', [CLassroomsController::class, 'store'])->name('classrooms.store');
 
-Route::prefix('/classrooms/{classroom}/topics')->name('topics.')->group(function () {
+// Route::get('/classrooms/{classroom}/edit', [ClassroomsController::class, 'edit'])->name('classrooms.edit')->whereNumber('id');
+
+// Route::put('/classrooms/{classroom}', [ClassroomsController::class, 'update'])->name('classrooms.update')->whereNumber('id');
+
+// Route::delete('/classrooms/{classroom}', [ClassroomsController::class, 'destroy'])->name('classrooms.destroy')->whereNumber('id');
+
+
+// Route::group([
+//     'middleware' => ['auth'],
+// ], function(){
+
+// });
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::prefix('classrooms/trashed')
+        ->name('classrooms.')
+        ->group(function () {
+
+            Route::get('/', [ClassroomsController::class, 'trashed'])->name('trashed');
+
+            Route::put('/{classroom}', [ClassroomsController::class, 'restore'])->name('restore');
+
+            Route::delete('/{classroom}', [ClassroomsController::class, 'forceDelete'])->name('force-delete');
+        });
+
+
+    Route::resource('classrooms', ClassroomsController::class);
+
+    Route::get('/classrooms/{classroom}/join', [JoinClassroomController::class, 'create'])
+        ->name('classrooms.join');
+
+    Route::post('/classrooms/{classroom}/join', [JoinClassroomController::class, 'store']);
+
+    Route::resource('classrooms.classworks', ClassworkController::class);
+
+    Route::get('/classrooms/{classroom}/people', [ClassroomPeopleController::class , 'index'])
+->name('Classroom.people');
+
+Route::delete('/classrooms/{classroom}/people', [ClassroomPeopleController::class, 'destroy'])->name('classrooms.people.destroy');
+
+Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+});
+
+// Route::resource('/classrooms', ClassroomsController::class)->names([
+//     // 'index' => 'classrooms/index',
+//     // 'create' => 'classrooms/create'
+// ], [
+//     'middleware' => ['auth']
+// ]);
+
+Route::prefix('classrooms.topics')->middleware('auth')->name('topics.')->group(function () {
     Route::get('/', [TopicsController::class, 'index'])->name('index');
     Route::get('/create', [TopicsController::class, 'create'])->name('create');
     Route::post('/', [TopicsController::class, 'store'])->name('store');
@@ -65,3 +117,5 @@ Route::prefix('/classrooms/{classroom}/topics')->name('topics.')->group(function
     Route::put('/{topic}', [TopicsController::class, 'update'])->name('update');
     Route::delete('/{topic}', [TopicsController::class, 'destroy'])->name('destroy');
 });
+
+

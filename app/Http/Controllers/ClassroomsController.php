@@ -20,7 +20,7 @@ class ClassroomsController extends Controller
 {
     public function index(Request $request): Renderable
     {
-        $classrooms = Classroom::status('archived')
+        $classrooms = Classroom::status('active')
         ->recent()
         ->orderBy('created_at', 'DESC')
         ->get(); //return Collection of Classroom
@@ -30,8 +30,6 @@ class ClassroomsController extends Controller
 
         $success = session('success'); // return value of success in the session
         //Session::reflash();
-
-
         return view('classrooms.index', compact('classrooms', 'success'));
     }
 
@@ -84,7 +82,7 @@ class ClassroomsController extends Controller
     {
 
         // Validation
-         
+
 
 
 

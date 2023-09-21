@@ -1,18 +1,19 @@
-<!DOCTYPE html>
 <html dir="{{ App::isLocale('ar') ? 'rtl' : 'ltr' }}" lang="{{ App::currentLocale() }}">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title', config('app.name'))</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title }}</title>
     @if (App::isLocale('ar'))
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css"
             integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
     @endif
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     @stack('styles')
 </head>
 
@@ -33,17 +34,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 </div>
-
-                @if (request()->is('classrooms'))
-                    <a href="{{ route('classrooms.create') }}" class="me-3 bg-Secondary rounded-pill ">
-                        <i class="fa-solid fa-plus p-2"></i></a>
-                @endif
-                @yield('edit')
-                {{-- @if (request()->is('classrooms/*'))
-                    <a href="{{ route('classrooms.edit', $classroom->id) }}" class="me-3 bg-Secondary rounded-pill ">
-                        <i class="fa-solid fa-pen-to-square p-2"></i>
-                    </a>
-                @endif --}}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown" style="border-radius: 25px">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -64,8 +54,9 @@
         </nav>
     </header>
 
+
     <main>
-        @yield('content')
+        {{ $slot }}
     </main>
 
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-5 border-top container">
@@ -93,9 +84,10 @@
                     </svg></a></li>
         </ul>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
+
     @stack('scripts')
 </body>
 

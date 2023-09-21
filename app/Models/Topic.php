@@ -4,28 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Topic extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    const TYPE_ASSIGNMENT = 'assignment';
+    const TYPE_MATERIAL = 'material';
+    const TYPE_QUESTION = 'question';
+
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_DRAFT = 'draft';
 
     protected $fillable = [
-        'name',
+        'classroom_id', 'user_id', 'topic_id', 'title',
+        'description', 'type', 'status', 'published_at', 'options'
     ];
-    /*
-    Default Values
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
-    protected $connection = 'mysql';
 
-    protected $table = 'topics';
-
-    protected $primaryKey = 'id';
-
-    protected $keyType = 'int';
-
-    public $incrementing = true;
-*/
-    public $timestamps = false;
+    public function classroom(): BelongsTo
+    {
+        return $this->belongsTo(Classroom::class);
+    }
 }
