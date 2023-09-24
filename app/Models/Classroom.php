@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 class Classroom extends Model
 {
@@ -21,8 +22,18 @@ class Classroom extends Model
     public static string $disk = 'public';
 
     protected $fillable = [
-        'name', 'section', 'subject', 'room', 'theme', 'cover_image_path', 'code',
+        'name', 'section', 'subject', 'room', 'theme', 'cover_image_path', 'code','user_id'
     ];
+    protected $appends = [
+        'cover_image_url',
+        'user_name',
+    ];
+
+    protected $hidden = [
+        'cover_image_patj',
+        'deleted_at',
+    ];
+
 
     function classworks(): HasMany
     {
@@ -56,6 +67,10 @@ class Classroom extends Model
     public function students()
     {
         return $this->users()->wherePivot('role', '=','student');
+    }
+    public function streams()
+    {
+        return $this->hasMany(Stream::class)->latest();
     }
 
     public function getRouteKeyName()

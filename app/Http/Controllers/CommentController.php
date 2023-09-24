@@ -26,6 +26,6 @@ class CommentController extends Controller
             'user_agent' => $request->userAgent(),
         ]);
 
-        return back()->with('success', 'Comment added');
+        return back()->with('success', 'Comment added !');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\ClassworkCreated;
+use App\Listeners\PostUnClassroomStream;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +20,14 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ClassworkCreated::class=> [
+            PostUnClassroomStream::class,
+            SendNotificationToAssignedStudents::class
+        ],
+        ClassworkUpdated::class => [
+            PostUnClassroomStream::class,
+            SendNotificationToAssignedStudents::class,
+        ],
     ];
 
     /**
@@ -26,6 +36,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
+        Event::listen('classwork.created',[new PostUnClassroomStream, 'handle']);
     }
 
     /**

@@ -31,10 +31,16 @@ class Classwork extends Model
         return $this->belongsTo(Classroom::class);
     }
 
-    public function topic(){
+    public function topic()
+    {
         return $this->belongsTo(Topic::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
+    
     public function users()
     {
         return $this->belongsToMany(User::class)
@@ -47,19 +53,21 @@ class Classwork extends Model
     }
 
 
-	/**
-	 * @return mixed
-	 */
-	public function getMorphClass() {
-		return $this->morphClass;
-	}
+    /**
+     * @return mixed
+     */
+    public function getMorphClass()
+    {
+        return $this->morphClass;
+    }
 
-	/**
-	 * @param mixed $morphClass
-	 * @return self
-	 */
-	public function setMorphClass($morphClass): self {
-		$this->morphClass = $morphClass;
-		return $this;
-	}
+    /**
+     * @param mixed $morphClass
+     * @return self
+     */
+    public function setMorphClass($morphClass): self
+    {
+        $this->morphClass = $morphClass;
+        return $this;
+    }
 }

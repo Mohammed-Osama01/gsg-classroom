@@ -35,6 +35,7 @@
 
                 </div>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <x-user-notifications-menu count="5" />
                     <li class="nav-item dropdown" style="border-radius: 25px">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,6 +50,8 @@
                             <li><a class="dropdown-item" href="#">LogOut</a></li>
                         </ul>
                     </li>
+
+
                 </ul>
             </div>
         </nav>
@@ -88,7 +91,13 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
 
+
+<script>
+    var classroomId;
+    const userId ="{{ Auth::id() }}";
+</script>
     @stack('scripts')
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

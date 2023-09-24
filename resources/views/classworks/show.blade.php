@@ -3,6 +3,7 @@
         <h1>{{ $classroom->name }} (#{{ $classroom->id }})</h1>
         <h3>{{ $classwork->title }}</h3>
         <hr>
+        <x-alert name="success" class="alert-success" />
         <div class="row">
             <div class="col-md-8">
                 <div>
@@ -68,6 +69,5 @@
             </div>
         </div>
     </div>
-
     </div>
 </x-main-layout>
