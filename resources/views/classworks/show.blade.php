@@ -12,6 +12,7 @@
                 <h4>Comments</h4>
                 <form action="{{ route('comments.store') }}" method="post">
                     @csrf
+
                     <input type="hidden" name="id" value="{{ $classwork->id }}">
                     <input type="hidden" name="type" value="classwork">
                     <div class="d-flex">
@@ -22,10 +23,12 @@
                         </div>
                         <div class="ms-1">
                             <button type="submit" class="btn btn-primary">Comment</button>
+
                         </div>
                     </div>
                 </form>
                 <div class="mt-4">
+
                     {{-- @foreach ($classwork->comments()->with('user')->get() as $comment) --}}
                     @foreach ($classwork->comments as $comment)
                         <div class="row">
@@ -40,10 +43,12 @@
                             </div>
                         </div>
                     @endforeach
+
                 </div>
             </div>
             <div class="col-md-4">
                 @can('submissions.create', [$classwork])
+
                     <div class="bordered rounded p-3 bg-light">
                         <h4>Submissions</h4>
                         @if ($submissions->count())

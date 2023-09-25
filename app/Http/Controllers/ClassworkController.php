@@ -57,7 +57,7 @@ class ClassworkController extends Controller
         $type = $this->getType($request);
         $classwork = new Classwork();
 
-        return view('classworks.create', compact('classroom', 'type','classwork' ));
+        return view('classworks.create', compact('classroom', 'type', 'classwork'));
     }
 
     /**
@@ -80,17 +80,17 @@ class ClassworkController extends Controller
             'type' => $type,
         ]);
         try {
-            DB::transaction(function () use ($classroom, $request) {
-                $classwork = $classroom->classworks()
-                    ->create($request->all());
-                $classwork->users()->attach($request->input('students'));
-                // dd($request->all());
-                // event(new ClassworkCreated($classwork));
-                ClassworkCreated::dispatch($classwork);
-            });
+        DB::transaction(function () use ($classroom, $request) {
+            $classwork = $classroom->classworks()
+                ->create($request->all());
+            $classwork->users()->attach($request->input('students'));
+            // dd($request->all());
+            // event(new ClassworkCreated($classwork));
+            ClassworkCreated::dispatch($classwork);
+        });
         } catch (\Exception $e) {
-            // throw $e;
-            return back()->with('error', $e->getMessage());
+        throw $e;
+        return back()->with('error', $e->getMessage());
         }
 
         return redirect()
@@ -124,32 +124,32 @@ class ClassworkController extends Controller
      */
     public function update(Request $request, Classroom $classroom, Classwork $classwork)
     {
-            // $this->authorize('update', $classwork);
-            $type = $classwork->type;
+        // $this->authorize('update', $classwork);
+        $type = $classwork->type;
 
-            $validate =  $request->validate([
-                'title' => ['required', 'string', 'max:255'],
-                'description' => ['nullable', 'string'],
-                'topic_id' => ['nullable', 'int', 'exists:topics,id'],
-                // 'student' => ['nullable'],
-                'options.grade' => [Rule::requiredIf(fn () => $type == 'assignment' || 'question'), 'numeric', 'min:0'],
-                'options.due' => ['nullable', 'date', 'after:published_at'],
-            ]);
-            $classwork->update($request->all());
+        $validate =  $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'topic_id' => ['nullable', 'int', 'exists:topics,id'],
+            // 'student' => ['nullable'],
+            'options.grade' => [Rule::requiredIf(fn () => $type == 'assignment' || 'question'), 'numeric', 'min:0'],
+            'options.due' => ['nullable', 'date', 'after:published_at'],
+        ]);
+        $classwork->update($request->all());
 
-            // event(new ClassworkUpdated($classwork));
-            ClassworkUpdated::dispatch($classwork);
+        // event(new ClassworkUpdated($classwork));
+        ClassworkUpdated::dispatch($classwork);
 
-            return View::make('classworks.show', compact('classroom', 'classwork'))
-                ->with('success', __('Classwork Updated !'));
-        }
-        //
-        // $classwork->update($request->all());
-        // $classwork->users()->sync($request->input('students'));
+        return View::make('classworks.show', compact('classroom', 'classwork'))
+            ->with('success', __('Classwork Updated !'));
+    }
+    //
+    // $classwork->update($request->all());
+    // $classwork->users()->sync($request->input('students'));
 
 
-        // return back()
-        //     ->with('success', 'Classwork updated!');
+    // return back()
+    //     ->with('success', 'Classwork updated!');
     // }
 
     /**

@@ -30,7 +30,7 @@ class NewClassworkNotification extends Notification
     public function via(object $notifiable): array
     {
         //Channels: mail , database , broadcast , vonage (sms) , slack
-        $via = ['database',  'broadcast','mail',];
+        $via = ['database',  'broadcast', 'mail',];
         return $via;
     }
 
@@ -47,7 +47,7 @@ class NewClassworkNotification extends Notification
         ]);
         return (new MailMessage)
             ->subject(__('New :type', [
-                'type' => $classwork->type->value,
+                'type' => $classwork->type,
             ]))
             ->greeting(__('Hi :name', [
                 'name' => $notifiable->name
@@ -55,16 +55,14 @@ class NewClassworkNotification extends Notification
             ->line($content)
             ->action(__('Go to classwork'), route('classrooms.classworks.show', [$classwork->classroom_id, $classwork->id]))
             ->line('Thank you for using our application!');
-
     }
 
 
-    public function toDatabase(object $notifiable) : DatabaseMessage
+    public function toDatabase(object $notifiable): DatabaseMessage
     {
 
 
         return new DatabaseMessage($this->createMessage());
-
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage
@@ -73,8 +71,8 @@ class NewClassworkNotification extends Notification
     }
 
     protected function createMessage()
-        {
-            $classwork = $this->classwork;
+    {
+        $classwork = $this->classwork;
         $content = __(':name posted a new :type: :title', [
             'name' => $classwork->user->name,
             'type' => __($classwork->type),
@@ -82,14 +80,14 @@ class NewClassworkNotification extends Notification
         ]);
         return [
             'title' => __('New :type', [
-                'type' => $classwork->type->value,
+                'type' => $classwork->type,
             ]),
             'body' => $content,
             'image' => '',
             'link' => route('classrooms.classworks.show', [$classwork->classroom_id, $classwork->id]),
             'classwork' => $classwork->id,
         ];
-        }
+    }
 
     /**
      * Get the array representation of the notification.

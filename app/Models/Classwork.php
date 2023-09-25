@@ -26,6 +26,11 @@ class Classwork extends Model
         'description', 'type', 'status', 'published_at', 'options'
     ];
 
+    protected $casts = [
+        'options' => 'json',
+        'published_at' => 'date'
+    ];
+
     public function classroom(): BelongsTo
     {
         return $this->belongsTo(Classroom::class);
@@ -40,7 +45,7 @@ class Classwork extends Model
         return $this->belongsTo(User::class);
     }
 
-    
+
     public function users()
     {
         return $this->belongsToMany(User::class)

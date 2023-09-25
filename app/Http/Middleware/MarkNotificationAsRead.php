@@ -20,7 +20,7 @@ class MarkNotificationAsRead
         if ($id && $user) {
             $notification = $user->unreadNotifications()->find($id);
             if ($notification) {
-                $notification->makAsread();
+                $notification->markAsRead();
             }
         }
         return $next($request);

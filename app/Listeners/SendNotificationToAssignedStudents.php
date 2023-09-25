@@ -22,7 +22,7 @@ class SendNotificationToAssignedStudents
     /**
      * Handle the event.
      */
-    public function handle(ClassworkUpdated $event): void
+    public function handle($event): void
     {
         // $user = (User::find(1));
         // $user->notify(new NewClassworkNotification($event->classwork));
@@ -30,6 +30,8 @@ class SendNotificationToAssignedStudents
         // foreach($event->classwork->users as $user){
         //     $user->notify(new NewClassworkNotification($event->classwork));
         // }
-        Notification::send($event->classwork->users,new NewClassworkNotification($event->classwork ));
+
+
+        Notification::send($event->classwork->classroom->users, new NewClassworkNotification($event->classwork));
     }
 }

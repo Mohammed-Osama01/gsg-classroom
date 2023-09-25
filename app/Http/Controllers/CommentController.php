@@ -18,11 +18,9 @@ class CommentController extends Controller
 
         Auth::user()->comments()->create([
             'commentable_id' => $request->input('id'),
-            // AppServiceProvider
             'commentable_type' => $request->input('type'),
             'content' => $request->input('content'),
             'ip' => $request->ip(),
-            // 'user_agent' => $request->header('user-agent')
             'user_agent' => $request->userAgent(),
         ]);
 
